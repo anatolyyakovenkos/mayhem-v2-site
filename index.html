@@ -3,345 +3,712 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mayhem V2 | Trading Laboratory</title>
+<title>Mayhem V2 — Trading Laboratory</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#070708;
-  --bg-2:#0d0d10;
-  --panel:#111114;
-  --panel-2:#16161b;
-  --line:#1f1f26;
-  --line-2:#2a2a33;
-  --red:#ff2233;
+  --bg:#0a0a0c;
+  --bg-2:#0f0f12;
+  --panel:#141418;
+  --panel-2:#1a1a20;
+  --panel-hover:#1f1f26;
+  --line:#23232b;
+  --line-2:#2c2c36;
+  --red:#ff2a3c;
   --red-2:#ff5566;
-  --red-glow:rgba(255,34,51,.45);
-  --text:#e8e8ec;
-  --muted:#7a7a85;
-  --green:#22ff88;
+  --red-soft:rgba(255,42,60,.12);
+  --red-glow:rgba(255,42,60,.3);
+  --text:#ececf1;
+  --text-2:#b4b4be;
+  --muted:#72727d;
+  --green:#22d97a;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',ui-monospace,monospace;font-size:14px;-webkit-font-smoothing:antialiased}
+html,body{
+  background:var(--bg);color:var(--text);
+  font-family:'Inter',system-ui,sans-serif;font-size:14px;
+  -webkit-font-smoothing:antialiased;
+}
 body{
   min-height:100vh;
   background:
-    radial-gradient(1200px 600px at 50% -200px,rgba(255,34,51,.18),transparent 60%),
-    radial-gradient(800px 400px at 90% 110%,rgba(255,34,51,.10),transparent 60%),
-    repeating-linear-gradient(0deg,rgba(255,255,255,.015) 0,rgba(255,255,255,.015) 1px,transparent 1px,transparent 4px),
+    radial-gradient(900px 500px at 15% -10%,rgba(255,42,60,.08),transparent 60%),
+    radial-gradient(700px 400px at 90% 100%,rgba(255,42,60,.06),transparent 60%),
     var(--bg);
 }
 a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,textarea{font-family:inherit}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
 
-/* ===== HEADER ===== */
-.topbar{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 28px;
-  border-bottom:1px solid var(--line);
-  background:linear-gradient(180deg,rgba(20,8,10,.9),rgba(10,5,7,.6));
-  backdrop-filter:blur(8px);
-  position:sticky;top:0;z-index:50;
+/* ===== APP SHELL ===== */
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{
+  border-right:1px solid var(--line);
+  background:linear-gradient(180deg,#0c0c10,#0a0a0c);
+  padding:22px 16px;
+  display:flex;flex-direction:column;gap:8px;
+  position:sticky;top:0;height:100vh;
 }
-.brand{display:flex;align-items:center;gap:14px}
+.brand{
+  display:flex;align-items:center;gap:12px;
+  padding:6px 10px 18px;
+  border-bottom:1px solid var(--line);margin-bottom:14px;
+}
 .brand-mark{
-  width:38px;height:38px;border:1.5px solid var(--red);
+  width:36px;height:36px;border-radius:8px;
+  background:linear-gradient(135deg,var(--red),#a51220);
   display:grid;place-items:center;
-  background:radial-gradient(circle at 50% 50%,rgba(255,34,51,.35),transparent 70%);
-  box-shadow:0 0 18px var(--red-glow),inset 0 0 12px rgba(255,34,51,.3);
-  clip-path:polygon(20% 0,100% 0,80% 100%,0 100%);
+  box-shadow:0 6px 18px rgba(255,42,60,.35),inset 0 1px 0 rgba(255,255,255,.25);
+  font-family:'Orbitron',sans-serif;font-weight:900;color:#fff;font-size:18px;
 }
-.brand-mark span{font-family:'Orbitron',sans-serif;font-weight:900;color:var(--red);font-size:18px;text-shadow:0 0 8px var(--red)}
-.brand-text{line-height:1}
-.brand-text .name{font-family:'Orbitron',sans-serif;font-weight:900;font-size:22px;letter-spacing:2px;color:#fff;text-shadow:0 0 12px var(--red-glow)}
-.brand-text .sub{font-size:9px;letter-spacing:4px;color:var(--red-2);margin-top:4px}
+.brand-text{line-height:1.15}
+.brand-text .name{font-family:'Orbitron',sans-serif;font-weight:900;font-size:15px;letter-spacing:1px;color:#fff}
+.brand-text .sub{font-size:9px;letter-spacing:1.6px;color:var(--muted);margin-top:3px;text-transform:uppercase}
 
-.nav{display:flex;align-items:center;gap:6px}
-.nav a{
-  font-size:11px;letter-spacing:2.5px;font-weight:600;color:var(--muted);
-  padding:10px 16px;border:1px solid transparent;border-radius:2px;
+.nav-section{display:flex;flex-direction:column;gap:2px;margin-bottom:10px}
+.nav-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 12px;border-radius:8px;color:var(--text-2);
+  font-size:13.5px;font-weight:500;
   transition:.15s;
 }
-.nav a:hover{color:#fff;border-color:var(--line-2);background:rgba(255,34,51,.06)}
-.nav .sep{color:var(--line-2);font-size:8px;user-select:none}
+.nav-item .ico{width:18px;height:18px;display:grid;place-items:center;color:var(--muted);transition:.15s}
+.nav-item:hover{background:var(--panel);color:#fff}
+.nav-item:hover .ico{color:var(--red-2)}
+.nav-item.active{background:var(--red-soft);color:#fff}
+.nav-item.active .ico{color:var(--red)}
+.nav-item.active{box-shadow:inset 2px 0 0 var(--red)}
 
-.header-right{display:flex;align-items:center;gap:10px}
-.icon-btn{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line-2);background:var(--panel);color:var(--muted);cursor:pointer;border-radius:2px;transition:.15s}
-.icon-btn:hover{color:#fff;border-color:var(--red);box-shadow:0 0 10px var(--red-glow)}
-.pill{display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--line-2);background:var(--panel);font-size:11px;letter-spacing:1.5px;color:var(--muted);border-radius:2px}
-.pill .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
-.pill b{color:#fff;font-weight:700}
-.btn-launch{
-  padding:10px 22px;background:linear-gradient(180deg,var(--red),#c81020);
-  color:#fff;font-weight:800;font-size:12px;letter-spacing:2.5px;
-  border:1px solid var(--red-2);border-radius:2px;cursor:pointer;
-  box-shadow:0 0 18px var(--red-glow),inset 0 1px 0 rgba(255,255,255,.25);
-  text-transform:uppercase;font-family:inherit;
+.cta-side{
+  margin-top:6px;
+  padding:12px 14px;border-radius:10px;
+  background:linear-gradient(180deg,var(--red),#c81020);
+  color:#fff;font-weight:700;font-size:13px;letter-spacing:.5px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 8px 20px rgba(255,42,60,.35),inset 0 1px 0 rgba(255,255,255,.2);
+  transition:.15s;
 }
-.btn-launch:hover{filter:brightness(1.15)}
+.cta-side:hover{filter:brightness(1.1);transform:translateY(-1px)}
 
-/* ===== MAIN ===== */
-.wrap{max-width:720px;margin:48px auto 80px;padding:0 24px}
+.spacer{flex:1}
 
-.card{
-  border:1px solid var(--line-2);
-  background:linear-gradient(180deg,var(--panel),var(--bg-2));
-  padding:32px 36px 36px;
-  position:relative;
-  box-shadow:0 0 0 1px rgba(255,34,51,.08),0 30px 80px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.03);
+.miniapp{
+  border:1px solid var(--line);background:var(--panel);border-radius:12px;
+  padding:14px;display:flex;align-items:center;gap:12px;
 }
-.card::before,.card::after{
-  content:"";position:absolute;width:14px;height:14px;border:1.5px solid var(--red);
+.miniapp .qr{
+  width:54px;height:54px;border-radius:8px;flex-shrink:0;
+  background:
+    linear-gradient(45deg,#000 25%,transparent 25%),
+    linear-gradient(-45deg,#000 25%,transparent 25%),
+    linear-gradient(45deg,transparent 75%,#000 75%),
+    linear-gradient(-45deg,transparent 75%,#000 75%),
+    #fff;
+  background-size:8px 8px;
+  background-position:0 0,0 4px,4px -4px,-4px 0;
+  border:2px solid #fff;
 }
-.card::before{top:-1px;left:-1px;border-right:none;border-bottom:none}
-.card::after{bottom:-1px;right:-1px;border-left:none;border-top:none}
+.miniapp .info{font-size:11px;line-height:1.4}
+.miniapp .info b{color:#fff;display:block;font-size:12px;margin-bottom:2px}
+.miniapp .info span{color:var(--muted)}
 
-.card-corner-tr,.card-corner-bl{position:absolute;width:14px;height:14px;border:1.5px solid var(--red)}
-.card-corner-tr{top:-1px;right:-1px;border-left:none;border-bottom:none}
-.card-corner-bl{bottom:-1px;left:-1px;border-right:none;border-top:none}
-
-.wallet-row{
-  display:flex;align-items:center;justify-content:space-between;
-  border:1px solid var(--line-2);background:#08080a;
-  padding:12px 16px;margin-bottom:26px;font-size:11px;letter-spacing:1.5px;
+.miniapp-cta{
+  margin-top:10px;width:100%;padding:9px;border-radius:8px;
+  border:1px solid var(--line-2);background:var(--panel);color:#fff;
+  font-size:12px;font-weight:600;transition:.15s;
 }
-.wallet-row .left{display:flex;align-items:center;gap:10px}
-.wallet-row .dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green)}
-.wallet-row .label{color:var(--muted)}
-.wallet-row .addr{color:#fff;font-weight:700}
-.wallet-row .right{color:var(--muted);font-size:10px}
+.miniapp-cta:hover{border-color:var(--red);background:var(--panel-hover)}
 
-.row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
-.field label{display:block;font-size:10px;letter-spacing:2.5px;color:var(--muted);margin-bottom:8px;font-weight:600}
+/* ===== TOPBAR ===== */
+.main{display:flex;flex-direction:column;min-width:0}
+.topbar{
+  display:flex;align-items:center;gap:18px;
+  padding:14px 26px;
+  border-bottom:1px solid var(--line);
+  background:rgba(12,12,16,.7);backdrop-filter:blur(12px);
+  position:sticky;top:0;z-index:30;
+}
+.search{
+  flex:1;max-width:520px;
+  display:flex;align-items:center;gap:10px;
+  background:var(--panel);border:1px solid var(--line);
+  padding:10px 14px;border-radius:10px;
+  transition:.15s;
+}
+.search:focus-within{border-color:var(--red);box-shadow:0 0 0 3px var(--red-soft)}
+.search input{flex:1;background:none;border:none;outline:none;color:#fff;font-size:13.5px}
+.search input::placeholder{color:var(--muted)}
+.search .kbd{font-size:10px;color:var(--muted);border:1px solid var(--line-2);padding:2px 6px;border-radius:4px}
+
+.top-link{font-size:12.5px;color:var(--text-2);display:flex;align-items:center;gap:6px}
+.top-link b{color:var(--red-2)}
+
+.top-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.icon-btn{
+  width:38px;height:38px;display:grid;place-items:center;
+  border:1px solid var(--line);background:var(--panel);color:var(--text-2);
+  border-radius:10px;transition:.15s;
+}
+.icon-btn:hover{color:#fff;border-color:var(--red);background:var(--panel-hover)}
+.icon-btn svg{width:18px;height:18px}
+
+.btn-connect{
+  padding:10px 18px;border-radius:10px;
+  background:linear-gradient(180deg,var(--red),#c81020);
+  color:#fff;font-weight:700;font-size:13px;letter-spacing:.3px;
+  display:flex;align-items:center;gap:9px;
+  box-shadow:0 6px 16px rgba(255,42,60,.35),inset 0 1px 0 rgba(255,255,255,.22);
+  transition:.15s;
+}
+.btn-connect:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.btn-connect svg{width:16px;height:16px}
+.btn-connect.connected{background:linear-gradient(180deg,#1a1a22,#13131a);border:1px solid var(--line-2)}
+.btn-connect.connected .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+
+/* ===== CONTENT ===== */
+.content{
+  display:grid;grid-template-columns:1fr 360px;gap:28px;
+  padding:32px 36px 60px;max-width:1320px;width:100%;margin:0 auto;
+}
+
+.page-head{margin-bottom:22px}
+.page-head h1{font-size:24px;font-weight:700;letter-spacing:-.3px;color:#fff}
+.page-head p{font-size:13px;color:var(--muted);margin-top:6px}
+
+.panel{
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;
+  padding:24px 26px;
+  box-shadow:0 1px 0 rgba(255,255,255,.02),0 30px 60px -30px rgba(0,0,0,.5);
+}
+.panel + .panel{margin-top:18px}
+.panel-title{
+  font-size:11px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;font-weight:600;
+  margin-bottom:16px;display:flex;align-items:center;gap:8px;
+}
+.panel-title::before{content:"";width:3px;height:12px;background:var(--red);border-radius:2px}
+
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{margin-bottom:16px}
+.field:last-child{margin-bottom:0}
+.field label{
+  display:block;font-size:12px;font-weight:600;color:var(--text-2);
+  margin-bottom:8px;letter-spacing:.2px;
+}
+.field label small{color:var(--muted);font-weight:500;margin-left:6px}
 .field input,.field textarea{
-  width:100%;background:#08080a;border:1px solid var(--line-2);
-  color:#fff;padding:14px 16px;font-family:inherit;font-size:13px;
-  border-radius:2px;outline:none;transition:.15s;
-}
-.field input:focus,.field textarea:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(255,34,51,.15)}
-.field textarea{resize:vertical;min-height:110px;line-height:1.55}
-.field.full{margin-bottom:18px}
-
-.image-block{margin-bottom:22px}
-.image-drop{
-  border:1.5px dashed var(--line-2);background:#08080a;
-  padding:24px;display:flex;align-items:center;gap:22px;
+  width:100%;background:var(--bg-2);border:1px solid var(--line);
+  color:#fff;padding:12px 14px;border-radius:9px;font-size:13.5px;outline:none;
   transition:.15s;
 }
-.image-drop:hover{border-color:var(--red);background:#0a0608}
-.image-preview{
-  width:130px;height:130px;flex-shrink:0;
-  border:1.5px solid var(--red);
-  background:radial-gradient(circle at 30% 30%,#3a0a12,#0a0508);
-  display:grid;place-items:center;position:relative;overflow:hidden;
-  box-shadow:0 0 24px rgba(255,34,51,.35),inset 0 0 30px rgba(255,34,51,.2);
-}
-.image-preview .badge{
-  position:absolute;top:6px;right:6px;
-  background:var(--red);color:#fff;font-size:9px;font-weight:800;letter-spacing:1px;
-  padding:3px 6px;border-radius:2px;
-}
-.image-preview .logo{
-  font-family:'Orbitron',sans-serif;font-weight:900;color:#fff;
-  font-size:32px;text-shadow:0 0 12px #ff0,0 2px 0 #000;line-height:1;text-align:center;
-}
-.image-preview .logo small{display:block;font-size:14px;color:var(--red-2);letter-spacing:2px;margin-top:3px}
-.image-info{flex:1}
-.image-info h4{font-size:11px;letter-spacing:2px;color:#fff;margin-bottom:6px}
-.image-info p{font-size:11px;color:var(--muted);line-height:1.6}
-.image-info .upload{
-  display:inline-block;margin-top:10px;padding:8px 14px;
-  border:1px solid var(--line-2);background:var(--panel);
-  font-size:10px;letter-spacing:1.5px;color:var(--muted);cursor:pointer;
-}
-.image-info .upload:hover{color:#fff;border-color:var(--red)}
+.field input::placeholder,.field textarea::placeholder{color:var(--muted)}
+.field input:focus,.field textarea:focus{border-color:var(--red);box-shadow:0 0 0 3px var(--red-soft)}
+.field textarea{resize:vertical;min-height:96px;line-height:1.6}
 
-.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:28px}
-.row3 .field input{padding:12px 14px;font-size:12px}
-
-.cta{
-  width:100%;padding:20px;background:linear-gradient(180deg,var(--red),#c81020);
-  color:#fff;font-weight:900;font-size:14px;letter-spacing:4px;
-  border:1px solid var(--red-2);border-radius:2px;cursor:pointer;font-family:inherit;
-  box-shadow:0 0 30px var(--red-glow),inset 0 1px 0 rgba(255,255,255,.3),inset 0 -2px 0 rgba(0,0,0,.3);
-  display:flex;align-items:center;justify-content:center;gap:12px;
-  text-transform:uppercase;
-  transition:.15s;
-}
-.cta:hover{filter:brightness(1.15);transform:translateY(-1px)}
-.cta svg{width:18px;height:18px}
-
-/* ===== INFO STRIP ===== */
-.strip{
-  max-width:720px;margin:0 auto 60px;padding:0 24px;
-  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
-}
-.strip .stat{
-  border:1px solid var(--line-2);background:var(--panel);padding:16px;
-  position:relative;overflow:hidden;
-}
-.strip .stat::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--red);box-shadow:0 0 10px var(--red)}
-.strip .stat .k{font-size:9px;letter-spacing:2px;color:var(--muted);margin-bottom:6px}
-.strip .stat .v{font-size:18px;color:#fff;font-weight:800;font-family:'Orbitron',sans-serif}
-.strip .stat .v small{font-size:10px;color:var(--red-2);margin-left:4px;font-family:'JetBrains Mono',monospace}
-
-/* ===== EXPLAINER ===== */
-.explainer{max-width:720px;margin:0 auto 60px;padding:0 24px}
-.explainer h2{
-  font-family:'Orbitron',sans-serif;font-size:14px;letter-spacing:4px;color:var(--red);
-  margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--line-2);
-}
-.explainer p{font-size:12px;line-height:1.85;color:#bcbcc4;margin-bottom:14px}
-.explainer p strong{color:#fff}
-.explainer .pillars{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
-.explainer .pillar{border:1px solid var(--line-2);background:var(--panel);padding:18px}
-.explainer .pillar h3{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;color:var(--red);margin-bottom:10px}
-.explainer .pillar p{font-size:11px;line-height:1.7;color:#aaa;margin:0}
-
-/* ===== FOOTER ===== */
-.foot{
-  border-top:1px solid var(--line);padding:22px 28px;
+.social-toggle{
   display:flex;align-items:center;justify-content:space-between;
-  font-size:10px;letter-spacing:2px;color:var(--muted);
+  padding:12px 14px;border:1px solid var(--line);border-radius:9px;
+  background:var(--bg-2);font-size:12.5px;color:var(--text-2);
+  cursor:pointer;transition:.15s;margin-top:4px;
 }
-.foot .sys{display:flex;align-items:center;gap:8px}
-.foot .sys .dot{width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green)}
+.social-toggle:hover{border-color:var(--line-2);color:#fff}
+.social-toggle .left{display:flex;align-items:center;gap:10px}
+.social-toggle svg{width:14px;height:14px;color:var(--muted)}
+.social-fields{display:none;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px}
+.social-fields.open{display:grid}
+.social-fields .field{margin-bottom:0}
 
+/* feature toggles */
+.features{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.feature{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;border:1px solid var(--line);border-radius:11px;
+  background:var(--bg-2);transition:.15s;
+}
+.feature:hover{border-color:var(--line-2);background:var(--panel-hover)}
+.feature .ico{
+  width:38px;height:38px;border-radius:9px;display:grid;place-items:center;flex-shrink:0;
+  background:linear-gradient(135deg,rgba(255,42,60,.18),rgba(255,42,60,.05));
+  border:1px solid rgba(255,42,60,.25);color:var(--red-2);
+}
+.feature .ico svg{width:18px;height:18px}
+.feature .info{flex:1;min-width:0}
+.feature .info .name{font-size:13.5px;font-weight:600;color:#fff;display:flex;align-items:center;gap:8px}
+.feature .info .name .badge{font-size:9px;font-weight:700;background:var(--red);color:#fff;padding:2px 6px;border-radius:4px;letter-spacing:.5px}
+.feature .info .desc{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.45}
+.feature .info .desc a{color:var(--red-2);text-decoration:underline}
+
+/* switch */
+.switch{position:relative;width:38px;height:22px;flex-shrink:0;cursor:pointer}
+.switch input{display:none}
+.switch .slider{
+  position:absolute;inset:0;background:var(--line-2);border-radius:99px;transition:.2s;
+}
+.switch .slider::before{
+  content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;
+  background:#fff;border-radius:50%;transition:.2s;box-shadow:0 2px 4px rgba(0,0,0,.5);
+}
+.switch input:checked + .slider{background:var(--red);box-shadow:0 0 12px var(--red-glow)}
+.switch input:checked + .slider::before{transform:translateX(16px)}
+
+/* ===== PREVIEW SIDE ===== */
+.preview-col{display:flex;flex-direction:column;gap:18px}
+.preview-card{
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;
+  padding:22px;box-shadow:0 30px 60px -30px rgba(0,0,0,.5);
+  position:sticky;top:96px;
+}
+.preview-head{
+  font-size:11px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;font-weight:600;
+  margin-bottom:14px;display:flex;align-items:center;gap:8px;
+}
+.preview-head::before{content:"";width:3px;height:12px;background:var(--red);border-radius:2px}
+
+.coin-card{
+  border:1px solid var(--line);border-radius:12px;background:var(--bg-2);
+  padding:18px;
+}
+.coin-img{
+  width:100%;aspect-ratio:1;border-radius:10px;
+  background:
+    radial-gradient(circle at 35% 30%,#3a0a14,#0d0508 70%);
+  border:1px solid var(--line-2);
+  display:grid;place-items:center;position:relative;overflow:hidden;
+  margin-bottom:14px;
+}
+.coin-img::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 50%,rgba(255,42,60,.15),transparent 65%);
+}
+.coin-img .logo{
+  font-family:'Orbitron',sans-serif;font-weight:900;color:#fff;
+  font-size:54px;text-shadow:0 0 20px var(--red),0 4px 0 #000;line-height:1;
+  position:relative;text-align:center;
+}
+.coin-img .logo small{display:block;font-size:22px;color:var(--red);letter-spacing:2px;margin-top:4px}
+.coin-name{font-size:17px;font-weight:700;color:#fff;margin-bottom:4px}
+.coin-ticker{font-size:12px;color:var(--muted);margin-bottom:10px}
+.coin-desc{font-size:12px;color:var(--text-2);line-height:1.55}
+
+.preview-stats{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.preview-stats .s{
+  border:1px solid var(--line);background:var(--bg-2);border-radius:8px;
+  padding:10px 12px;
+}
+.preview-stats .s .k{font-size:9px;letter-spacing:1.2px;color:var(--muted);text-transform:uppercase}
+.preview-stats .s .v{font-size:14px;font-weight:700;color:#fff;margin-top:3px}
+.preview-stats .s .v.red{color:var(--red-2)}
+
+.upload-zone{
+  border:1.5px dashed var(--line-2);border-radius:11px;
+  background:var(--bg-2);padding:22px;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  transition:.15s;cursor:pointer;
+  margin-top:14px;
+}
+.upload-zone:hover{border-color:var(--red);background:var(--panel-hover)}
+.upload-zone .icon{
+  width:42px;height:42px;border-radius:10px;
+  background:rgba(255,42,60,.1);border:1px solid rgba(255,42,60,.25);
+  display:grid;place-items:center;color:var(--red-2);
+}
+.upload-zone .t{font-size:13px;color:#fff;font-weight:600}
+.upload-zone .h{font-size:11px;color:var(--muted)}
+
+/* CTA */
+.create-btn{
+  width:100%;margin-top:18px;padding:14px;border-radius:11px;
+  background:linear-gradient(180deg,var(--red),#c81020);
+  color:#fff;font-size:14px;font-weight:700;letter-spacing:.3px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  box-shadow:0 8px 22px rgba(255,42,60,.35),inset 0 1px 0 rgba(255,255,255,.22);
+  transition:.15s;
+}
+.create-btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.create-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;filter:grayscale(.3)}
+.create-btn svg{width:16px;height:16px}
+
+/* ===== WALLET MODAL ===== */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(5,5,8,.75);backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;z-index:100;
+  animation:fade .15s ease;
+}
+.modal-overlay.open{display:flex}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.modal{
+  background:var(--panel);border:1px solid var(--line-2);border-radius:16px;
+  width:380px;max-width:92vw;padding:24px;
+  box-shadow:0 30px 80px rgba(0,0,0,.7),0 0 0 1px rgba(255,42,60,.15);
+}
+.modal h3{font-size:17px;font-weight:700;color:#fff;margin-bottom:4px}
+.modal p{font-size:12.5px;color:var(--muted);margin-bottom:18px}
+.modal .wallet-list{display:flex;flex-direction:column;gap:8px}
+.wallet-opt{
+  display:flex;align-items:center;gap:14px;padding:14px;
+  border:1px solid var(--line);background:var(--bg-2);border-radius:11px;
+  transition:.15s;width:100%;text-align:left;
+}
+.wallet-opt:hover{border-color:var(--red);background:var(--panel-hover)}
+.wallet-opt .logo{
+  width:36px;height:36px;border-radius:9px;display:grid;place-items:center;
+  font-weight:900;font-size:14px;flex-shrink:0;
+}
+.wallet-opt.phantom .logo{background:linear-gradient(135deg,#534bb1,#3b3596);color:#fff}
+.wallet-opt.solflare .logo{background:linear-gradient(135deg,#ffba33,#ff7a00);color:#000}
+.wallet-opt.backpack .logo{background:linear-gradient(135deg,#e33e3f,#a51220);color:#fff}
+.wallet-opt .name{flex:1;font-size:13.5px;font-weight:600;color:#fff}
+.wallet-opt .status{font-size:10.5px;color:var(--muted)}
+.wallet-opt .status.installed{color:var(--green)}
+.modal-close{
+  margin-top:14px;width:100%;padding:10px;
+  border:1px solid var(--line);background:transparent;color:var(--muted);
+  border-radius:9px;font-size:12px;
+}
+.modal-close:hover{color:#fff;border-color:var(--line-2)}
+
+@media(max-width:1080px){
+  .content{grid-template-columns:1fr}
+  .preview-card{position:static}
+}
 @media(max-width:760px){
-  .nav{display:none}
-  .row,.row3,.explainer .pillars,.strip{grid-template-columns:1fr}
-  .image-drop{flex-direction:column;text-align:center}
+  .app{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .content{padding:22px 16px 50px}
+  .row,.social-fields.open{grid-template-columns:1fr}
   .topbar{padding:12px 16px}
-  .brand-text .name{font-size:18px}
-  .wrap{margin:24px auto 40px}
-  .card{padding:22px 18px}
+  .search{max-width:none}
+  .top-link{display:none}
 }
 </style>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="brand">
-    <div class="brand-mark"><span>M</span></div>
-    <div class="brand-text">
-      <div class="name">MAYHEM V2</div>
-      <div class="sub">TRADING LABORATORY</div>
-    </div>
-  </div>
+<div class="app">
 
-  <nav class="nav">
-    <a href="#">LEADERBOARD</a><span class="sep">◆</span>
-    <a href="#">PORTFOLIO</a><span class="sep">◆</span>
-    <a href="#">POSITIONS</a><span class="sep">◆</span>
-    <a href="#">OPERATIONS</a><span class="sep">◆</span>
-    <a href="#">SCOPE</a><span class="sep">◆</span>
-    <a href="#">DOCUMENTATION</a>
-  </nav>
-
-  <div class="header-right">
-    <button class="icon-btn" title="Search">⌕</button>
-    <button class="icon-btn" title="Notifications">◔</button>
-    <div class="pill"><span class="dot"></span>FUEL <b>/ PNL</b></div>
-    <button class="btn-launch">LAUNCH</button>
-  </div>
-</header>
-
-<main class="wrap">
-  <div class="card">
-    <span class="card-corner-tr"></span>
-    <span class="card-corner-bl"></span>
-
-    <div class="wallet-row">
-      <div class="left">
-        <span class="dot"></span>
-        <span class="label">CONNECTED:</span>
-        <span class="addr">BLVQ...VFUE</span>
-      </div>
-      <div class="right">SOL · MAINNET</div>
-    </div>
-
-    <div class="row">
-      <div class="field">
-        <label>TOKEN NAME</label>
-        <input type="text" value="MAYHEM V2" placeholder="Enter token name">
-      </div>
-      <div class="field">
-        <label>SYMBOL / TICKER (MAX 8)</label>
-        <input type="text" value="MHMV2" placeholder="TICKER" maxlength="8">
+  <!-- ============= SIDEBAR ============= -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">M</div>
+      <div class="brand-text">
+        <div class="name">MAYHEM V2</div>
+        <div class="sub">Trading Lab</div>
       </div>
     </div>
 
-    <div class="field full">
-      <label>DESCRIPTION</label>
-      <textarea>MAYHEM V2 IS A TRADING BOT AUTOMATED BY 18 AI AGENTS. BUILT FOR SPEED, NOT EXTRACTION. EVERY FEE IS CIRCUMVENTED BACK INTO THE COIN. SUPPLY THE BOT BUYS IS BURNT — NEVER SOLD. AMPLIFYING MOMENTUM WITHOUT DRAINING HOLDERS.</textarea>
+    <div class="nav-section">
+      <a class="nav-item" href="#"><span class="ico">⌂</span> Home</a>
+      <a class="nav-item active" href="#"><span class="ico">＋</span> Create</a>
+      <a class="nav-item" href="#"><span class="ico">▲</span> Live</a>
+      <a class="nav-item" href="#"><span class="ico">⊞</span> Portfolio</a>
+      <a class="nav-item" href="#"><span class="ico">⇄</span> Positions</a>
+      <a class="nav-item" href="#"><span class="ico">◉</span> Operations</a>
+      <a class="nav-item" href="#"><span class="ico">⌬</span> Leaderboard</a>
+      <a class="nav-item" href="#"><span class="ico">⎙</span> Docs</a>
     </div>
 
-    <div class="image-block">
-      <label style="display:block;font-size:10px;letter-spacing:2.5px;color:var(--muted);margin-bottom:8px;font-weight:600">IMAGE (SQUARE PREFERRED, MAX 4MB)</label>
-      <div class="image-drop">
-        <div class="image-preview">
-          <span class="badge">V2</span>
-          <div class="logo">MHM<small>V2</small></div>
+    <button class="cta-side">＋  Create coin</button>
+
+    <div class="spacer"></div>
+
+    <div class="miniapp">
+      <div class="qr"></div>
+      <div class="info">
+        <b>Mayhem app</b>
+        <span>Scan to download</span>
+      </div>
+    </div>
+    <button class="miniapp-cta">Learn more</button>
+  </aside>
+
+  <!-- ============= MAIN ============= -->
+  <div class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="text" placeholder="Search for coins, traders, agents…">
+        <span class="kbd">⌘K</span>
+      </div>
+      <a href="#" class="top-link">Trade faster. <b>Mayhem mobile is live</b> →</a>
+
+      <div class="top-right">
+        <button class="icon-btn" title="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 21a2 2 0 0 0 4 0"/></svg></button>
+        <button class="icon-btn" title="Voice chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v4"/></svg></button>
+        <button class="btn-connect" id="connectBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 7h13a4 4 0 0 1 4 4v6a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7z"/><path d="M3 7l4-4h10"/><circle cx="16" cy="14" r="1.4" fill="currentColor"/></svg>
+          <span id="connectLabel">Connect Wallet</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- LEFT: FORM -->
+      <div>
+        <div class="page-head">
+          <h1>Create new coin</h1>
+          <p>Coin details can't be changed once it's created. Choose carefully.</p>
         </div>
-        <div class="image-info">
-          <h4>DROP LOGO HERE</h4>
-          <p>PNG · JPG · WEBP · GIF accepted. Square aspect ratio renders best across explorers and DexScreener.</p>
-          <span class="upload">▲ UPLOAD FILE</span>
+
+        <div class="panel">
+          <div class="panel-title">Coin details</div>
+
+          <div class="row">
+            <div class="field">
+              <label>Coin name</label>
+              <input id="f-name" type="text" placeholder="Name your coin" value="Mayhem V2">
+            </div>
+            <div class="field">
+              <label>Ticker</label>
+              <input id="f-ticker" type="text" placeholder="Add a coin ticker (e.g. DOGE)" value="MHMV2" maxlength="10">
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Description <small>(Optional)</small></label>
+            <textarea id="f-desc" placeholder="Write a short description">Mayhem V2 is the rebuilt version of the original bot. Every fee is routed back into the coin. Every token the bot buys is burnt — never sold. Permanent deflation, compounding momentum, zero extraction.</textarea>
+          </div>
+
+          <div class="social-toggle" id="socialToggle">
+            <div class="left">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>
+              Add social links <small style="color:var(--muted)">(Optional)</small>
+            </div>
+            <span id="socialChev">▾</span>
+          </div>
+
+          <div class="social-fields" id="socialFields">
+            <div class="field"><label>Twitter / X</label><input type="text" placeholder="https://x.com/…"></div>
+            <div class="field"><label>Telegram</label><input type="text" placeholder="https://t.me/…"></div>
+            <div class="field"><label>Website</label><input type="text" placeholder="https://…"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">Mechanics</div>
+
+          <div class="features">
+            <div class="feature">
+              <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+              <div class="info">
+                <div class="name">Mayhem mode</div>
+                <div class="desc">Increased price volume. The bot earns fees and routes 100% back into the coin.</div>
+              </div>
+              <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+            </div>
+
+            <div class="feature">
+              <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg></div>
+              <div class="info">
+                <div class="name">Tokenized agent <span class="badge">NEW</span></div>
+                <div class="desc">Automated buybacks &amp; burns. Every token the bot acquires is sent to the burn address. <a href="#">Learn more</a></div>
+              </div>
+              <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+            </div>
+
+            <div class="feature">
+              <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><circle cx="8" cy="15" r="1.2"/></svg></div>
+              <div class="info">
+                <div class="name">Cash back</div>
+                <div class="desc">Creator rewards routed to traders, not the dev wallet. Aligned incentives, no extraction.</div>
+              </div>
+              <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+            </div>
+
+            <div class="feature">
+              <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg></div>
+              <div class="info">
+                <div class="name">Active for 24h, only set at creation. May increase soft supply.</div>
+                <div class="desc">Bot purchases route directly to the burn address — supply only goes down.</div>
+              </div>
+              <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="row3">
-      <div class="field">
-        <label>TWITTER / X</label>
-        <input type="text" placeholder="LINK (OPTIONAL)">
-      </div>
-      <div class="field">
-        <label>TELEGRAM</label>
-        <input type="text" placeholder="LINK (OPTIONAL)">
-      </div>
-      <div class="field">
-        <label>WEBSITE</label>
-        <input type="text" placeholder="LINK (OPTIONAL)">
-      </div>
-    </div>
+      <!-- RIGHT: PREVIEW -->
+      <aside class="preview-col">
+        <div class="preview-card">
+          <div class="preview-head">Preview</div>
 
-    <button class="cta">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      CREATE TOKEN
-    </button>
-  </div>
-</main>
+          <div class="coin-card">
+            <div class="coin-img">
+              <div class="logo">MHM<small>V2</small></div>
+            </div>
+            <div class="coin-name" id="p-name">Mayhem V2</div>
+            <div class="coin-ticker" id="p-ticker">$MHMV2 · Solana</div>
+            <div class="coin-desc" id="p-desc">Mayhem V2 is the rebuilt version of the original bot. Every fee is routed back into the coin. Every token the bot buys is burnt — never sold.</div>
+          </div>
 
-<section class="strip">
-  <div class="stat"><div class="k">FEES → COIN</div><div class="v">100<small>%</small></div></div>
-  <div class="stat"><div class="k">BOT BUYS BURNT</div><div class="v">100<small>%</small></div></div>
-  <div class="stat"><div class="k">DEV TAX</div><div class="v">0<small>%</small></div></div>
-</section>
+          <div class="preview-stats">
+            <div class="s"><div class="k">Fees → Coin</div><div class="v red">100%</div></div>
+            <div class="s"><div class="k">Buys burnt</div><div class="v red">100%</div></div>
+            <div class="s"><div class="k">Dev tax</div><div class="v">0%</div></div>
+            <div class="s"><div class="k">Supply</div><div class="v">1B</div></div>
+          </div>
 
-<section class="explainer">
-  <h2>// WHAT IS MAYHEM V2</h2>
-  <p>You've seen the original Mayhem bot. Cool concept, broken execution — fees leaked out, supply got dumped on holders, same story every cycle.</p>
-  <p><strong>So we rebuilt it.</strong> Mayhem V2 is the version it should have been from day one. Two changes to the contract are all it took to flip the math.</p>
+          <div class="upload-zone">
+            <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg></div>
+            <div class="t">Upload coin image</div>
+            <div class="h">Drag &amp; drop or click. PNG · JPG · WEBP</div>
+          </div>
 
-  <div class="pillars">
-    <div class="pillar">
-      <h3>// FEES → COIN</h3>
-      <p>Every fee the bot generates is routed straight back into the token. The contract eats its own output. The more the bot runs, the stronger the coin gets.</p>
-    </div>
-    <div class="pillar">
-      <h3>// BUYS → BURN</h3>
-      <p>Supply purchased by the bot is sent to the burn address. Forever. Permanent deflation on every buy — not a wallet waiting to dump on you.</p>
+          <button class="create-btn" id="createBtn" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            <span id="createLabel">Connect wallet to create</span>
+          </button>
+        </div>
+      </aside>
+
     </div>
   </div>
-  <p style="margin-top:20px">Bot earns fees → fees buy supply → supply burns → circulating float drops → next round of fees hits a thinner book. <strong>It compounds.</strong></p>
-  <p>No dev tax. No team allocation. No insider unlocks. No "trust me bro" tokenomics. Just a bot that runs, a contract that burns, and a chart that reflects the math.</p>
-</section>
+</div>
 
-<footer class="foot">
-  <div class="sys"><span class="dot"></span>SYSTEMS NOMINAL · v2.0.1</div>
-  <div>© MAYHEM LABORATORY · ALL RIGHTS BURNT</div>
-</footer>
+<!-- WALLET MODAL -->
+<div class="modal-overlay" id="walletModal">
+  <div class="modal">
+    <h3>Connect a Solana wallet</h3>
+    <p>Pick the wallet you want to use to launch and trade on Mayhem V2.</p>
+    <div class="wallet-list">
+      <button class="wallet-opt phantom" data-wallet="phantom">
+        <div class="logo">P</div>
+        <div class="name">Phantom</div>
+        <div class="status" id="status-phantom">Detecting…</div>
+      </button>
+      <button class="wallet-opt solflare" data-wallet="solflare">
+        <div class="logo">S</div>
+        <div class="name">Solflare</div>
+        <div class="status" id="status-solflare">Detecting…</div>
+      </button>
+      <button class="wallet-opt backpack" data-wallet="backpack">
+        <div class="logo">B</div>
+        <div class="name">Backpack</div>
+        <div class="status" id="status-backpack">Detecting…</div>
+      </button>
+    </div>
+    <button class="modal-close" id="modalClose">Close</button>
+  </div>
+</div>
 
+<script>
+// ===== Solana wallet connect =====
+const installLinks = {
+  phantom:  'https://phantom.app/download',
+  solflare: 'https://solflare.com/download',
+  backpack: 'https://backpack.app/downloads',
+};
+
+function detectProviders(){
+  return {
+    phantom:  window.phantom?.solana || (window.solana?.isPhantom ? window.solana : null),
+    solflare: window.solflare?.isSolflare ? window.solflare : null,
+    backpack: window.backpack?.isBackpack ? window.backpack : null,
+  };
+}
+
+function refreshStatus(){
+  const p = detectProviders();
+  for (const w of ['phantom','solflare','backpack']){
+    const el = document.getElementById('status-'+w);
+    if (p[w]) { el.textContent = 'Installed'; el.classList.add('installed'); }
+    else      { el.textContent = 'Not installed'; }
+  }
+}
+
+function shortAddr(a){ return a.slice(0,4) + '…' + a.slice(-4); }
+
+let connectedAddress = null;
+
+async function connectWallet(name){
+  const providers = detectProviders();
+  const provider = providers[name];
+  if (!provider){ window.open(installLinks[name],'_blank'); return; }
+  try {
+    const resp = await provider.connect();
+    const pk = resp?.publicKey?.toString?.() || provider.publicKey?.toString?.();
+    if (!pk) throw new Error('No public key returned');
+    connectedAddress = pk;
+    onConnected(pk, name);
+  } catch (e){
+    console.error('Connect failed', e);
+    alert('Could not connect to ' + name + ': ' + (e.message || e));
+  }
+}
+
+function onConnected(pk, name){
+  const btn = document.getElementById('connectBtn');
+  btn.classList.add('connected');
+  btn.innerHTML = '<span class="dot"></span><span>'+shortAddr(pk)+'</span>';
+  document.getElementById('walletModal').classList.remove('open');
+
+  const create = document.getElementById('createBtn');
+  create.disabled = false;
+  document.getElementById('createLabel').textContent = 'Create coin';
+}
+
+document.getElementById('connectBtn').addEventListener('click', () => {
+  if (connectedAddress){
+    if (confirm('Disconnect wallet?')){
+      connectedAddress = null;
+      const btn = document.getElementById('connectBtn');
+      btn.classList.remove('connected');
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 7h13a4 4 0 0 1 4 4v6a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7z"/><path d="M3 7l4-4h10"/><circle cx="16" cy="14" r="1.4" fill="currentColor"/></svg><span>Connect Wallet</span>';
+      const create = document.getElementById('createBtn');
+      create.disabled = true;
+      document.getElementById('createLabel').textContent = 'Connect wallet to create';
+    }
+    return;
+  }
+  refreshStatus();
+  document.getElementById('walletModal').classList.add('open');
+});
+
+document.getElementById('modalClose').addEventListener('click', () =>
+  document.getElementById('walletModal').classList.remove('open'));
+
+document.getElementById('walletModal').addEventListener('click', (e) => {
+  if (e.target.id === 'walletModal') document.getElementById('walletModal').classList.remove('open');
+});
+
+document.querySelectorAll('.wallet-opt').forEach(el =>
+  el.addEventListener('click', () => connectWallet(el.dataset.wallet)));
+
+// ===== social toggle =====
+const sToggle = document.getElementById('socialToggle');
+const sFields = document.getElementById('socialFields');
+const sChev   = document.getElementById('socialChev');
+sToggle.addEventListener('click', () => {
+  sFields.classList.toggle('open');
+  sChev.textContent = sFields.classList.contains('open') ? '▴' : '▾';
+});
+
+// ===== live preview =====
+const fName = document.getElementById('f-name');
+const fTick = document.getElementById('f-ticker');
+const fDesc = document.getElementById('f-desc');
+const pName = document.getElementById('p-name');
+const pTick = document.getElementById('p-ticker');
+const pDesc = document.getElementById('p-desc');
+function syncPreview(){
+  pName.textContent = fName.value || 'Untitled';
+  pTick.textContent = '$' + (fTick.value || 'TICKER').toUpperCase() + ' · Solana';
+  pDesc.textContent = fDesc.value || 'A short description of your coin.';
+}
+[fName,fTick,fDesc].forEach(el => el.addEventListener('input', syncPreview));
+
+// ===== create button =====
+document.getElementById('createBtn').addEventListener('click', () => {
+  if (!connectedAddress) return;
+  alert('Coin "' + fName.value + '" ready to deploy from ' + shortAddr(connectedAddress) + '.\n\n(Stub — wire to your launch contract here.)');
+});
+</script>
 </body>
 </html>
