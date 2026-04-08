@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mayhem V2 | Trading Laboratory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070708;
+  --bg-2:#0d0d10;
+  --panel:#111114;
+  --panel-2:#16161b;
+  --line:#1f1f26;
+  --line-2:#2a2a33;
+  --red:#ff2233;
+  --red-2:#ff5566;
+  --red-glow:rgba(255,34,51,.45);
+  --text:#e8e8ec;
+  --muted:#7a7a85;
+  --green:#22ff88;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',ui-monospace,monospace;font-size:14px;-webkit-font-smoothing:antialiased}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(1200px 600px at 50% -200px,rgba(255,34,51,.18),transparent 60%),
+    radial-gradient(800px 400px at 90% 110%,rgba(255,34,51,.10),transparent 60%),
+    repeating-linear-gradient(0deg,rgba(255,255,255,.015) 0,rgba(255,255,255,.015) 1px,transparent 1px,transparent 4px),
+    var(--bg);
+}
+a{color:inherit;text-decoration:none}
+
+/* ===== HEADER ===== */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 28px;
+  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(20,8,10,.9),rgba(10,5,7,.6));
+  backdrop-filter:blur(8px);
+  position:sticky;top:0;z-index:50;
+}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-mark{
+  width:38px;height:38px;border:1.5px solid var(--red);
+  display:grid;place-items:center;
+  background:radial-gradient(circle at 50% 50%,rgba(255,34,51,.35),transparent 70%);
+  box-shadow:0 0 18px var(--red-glow),inset 0 0 12px rgba(255,34,51,.3);
+  clip-path:polygon(20% 0,100% 0,80% 100%,0 100%);
+}
+.brand-mark span{font-family:'Orbitron',sans-serif;font-weight:900;color:var(--red);font-size:18px;text-shadow:0 0 8px var(--red)}
+.brand-text{line-height:1}
+.brand-text .name{font-family:'Orbitron',sans-serif;font-weight:900;font-size:22px;letter-spacing:2px;color:#fff;text-shadow:0 0 12px var(--red-glow)}
+.brand-text .sub{font-size:9px;letter-spacing:4px;color:var(--red-2);margin-top:4px}
+
+.nav{display:flex;align-items:center;gap:6px}
+.nav a{
+  font-size:11px;letter-spacing:2.5px;font-weight:600;color:var(--muted);
+  padding:10px 16px;border:1px solid transparent;border-radius:2px;
+  transition:.15s;
+}
+.nav a:hover{color:#fff;border-color:var(--line-2);background:rgba(255,34,51,.06)}
+.nav .sep{color:var(--line-2);font-size:8px;user-select:none}
+
+.header-right{display:flex;align-items:center;gap:10px}
+.icon-btn{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line-2);background:var(--panel);color:var(--muted);cursor:pointer;border-radius:2px;transition:.15s}
+.icon-btn:hover{color:#fff;border-color:var(--red);box-shadow:0 0 10px var(--red-glow)}
+.pill{display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--line-2);background:var(--panel);font-size:11px;letter-spacing:1.5px;color:var(--muted);border-radius:2px}
+.pill .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+.pill b{color:#fff;font-weight:700}
+.btn-launch{
+  padding:10px 22px;background:linear-gradient(180deg,var(--red),#c81020);
+  color:#fff;font-weight:800;font-size:12px;letter-spacing:2.5px;
+  border:1px solid var(--red-2);border-radius:2px;cursor:pointer;
+  box-shadow:0 0 18px var(--red-glow),inset 0 1px 0 rgba(255,255,255,.25);
+  text-transform:uppercase;font-family:inherit;
+}
+.btn-launch:hover{filter:brightness(1.15)}
+
+/* ===== MAIN ===== */
+.wrap{max-width:720px;margin:48px auto 80px;padding:0 24px}
+
+.card{
+  border:1px solid var(--line-2);
+  background:linear-gradient(180deg,var(--panel),var(--bg-2));
+  padding:32px 36px 36px;
+  position:relative;
+  box-shadow:0 0 0 1px rgba(255,34,51,.08),0 30px 80px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.03);
+}
+.card::before,.card::after{
+  content:"";position:absolute;width:14px;height:14px;border:1.5px solid var(--red);
+}
+.card::before{top:-1px;left:-1px;border-right:none;border-bottom:none}
+.card::after{bottom:-1px;right:-1px;border-left:none;border-top:none}
+
+.card-corner-tr,.card-corner-bl{position:absolute;width:14px;height:14px;border:1.5px solid var(--red)}
+.card-corner-tr{top:-1px;right:-1px;border-left:none;border-bottom:none}
+.card-corner-bl{bottom:-1px;left:-1px;border-right:none;border-top:none}
+
+.wallet-row{
+  display:flex;align-items:center;justify-content:space-between;
+  border:1px solid var(--line-2);background:#08080a;
+  padding:12px 16px;margin-bottom:26px;font-size:11px;letter-spacing:1.5px;
+}
+.wallet-row .left{display:flex;align-items:center;gap:10px}
+.wallet-row .dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green)}
+.wallet-row .label{color:var(--muted)}
+.wallet-row .addr{color:#fff;font-weight:700}
+.wallet-row .right{color:var(--muted);font-size:10px}
+
+.row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+.field label{display:block;font-size:10px;letter-spacing:2.5px;color:var(--muted);margin-bottom:8px;font-weight:600}
+.field input,.field textarea{
+  width:100%;background:#08080a;border:1px solid var(--line-2);
+  color:#fff;padding:14px 16px;font-family:inherit;font-size:13px;
+  border-radius:2px;outline:none;transition:.15s;
+}
+.field input:focus,.field textarea:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(255,34,51,.15)}
+.field textarea{resize:vertical;min-height:110px;line-height:1.55}
+.field.full{margin-bottom:18px}
+
+.image-block{margin-bottom:22px}
+.image-drop{
+  border:1.5px dashed var(--line-2);background:#08080a;
+  padding:24px;display:flex;align-items:center;gap:22px;
+  transition:.15s;
+}
+.image-drop:hover{border-color:var(--red);background:#0a0608}
+.image-preview{
+  width:130px;height:130px;flex-shrink:0;
+  border:1.5px solid var(--red);
+  background:radial-gradient(circle at 30% 30%,#3a0a12,#0a0508);
+  display:grid;place-items:center;position:relative;overflow:hidden;
+  box-shadow:0 0 24px rgba(255,34,51,.35),inset 0 0 30px rgba(255,34,51,.2);
+}
+.image-preview .badge{
+  position:absolute;top:6px;right:6px;
+  background:var(--red);color:#fff;font-size:9px;font-weight:800;letter-spacing:1px;
+  padding:3px 6px;border-radius:2px;
+}
+.image-preview .logo{
+  font-family:'Orbitron',sans-serif;font-weight:900;color:#fff;
+  font-size:32px;text-shadow:0 0 12px #ff0,0 2px 0 #000;line-height:1;text-align:center;
+}
+.image-preview .logo small{display:block;font-size:14px;color:var(--red-2);letter-spacing:2px;margin-top:3px}
+.image-info{flex:1}
+.image-info h4{font-size:11px;letter-spacing:2px;color:#fff;margin-bottom:6px}
+.image-info p{font-size:11px;color:var(--muted);line-height:1.6}
+.image-info .upload{
+  display:inline-block;margin-top:10px;padding:8px 14px;
+  border:1px solid var(--line-2);background:var(--panel);
+  font-size:10px;letter-spacing:1.5px;color:var(--muted);cursor:pointer;
+}
+.image-info .upload:hover{color:#fff;border-color:var(--red)}
+
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:28px}
+.row3 .field input{padding:12px 14px;font-size:12px}
+
+.cta{
+  width:100%;padding:20px;background:linear-gradient(180deg,var(--red),#c81020);
+  color:#fff;font-weight:900;font-size:14px;letter-spacing:4px;
+  border:1px solid var(--red-2);border-radius:2px;cursor:pointer;font-family:inherit;
+  box-shadow:0 0 30px var(--red-glow),inset 0 1px 0 rgba(255,255,255,.3),inset 0 -2px 0 rgba(0,0,0,.3);
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  text-transform:uppercase;
+  transition:.15s;
+}
+.cta:hover{filter:brightness(1.15);transform:translateY(-1px)}
+.cta svg{width:18px;height:18px}
+
+/* ===== INFO STRIP ===== */
+.strip{
+  max-width:720px;margin:0 auto 60px;padding:0 24px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+}
+.strip .stat{
+  border:1px solid var(--line-2);background:var(--panel);padding:16px;
+  position:relative;overflow:hidden;
+}
+.strip .stat::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--red);box-shadow:0 0 10px var(--red)}
+.strip .stat .k{font-size:9px;letter-spacing:2px;color:var(--muted);margin-bottom:6px}
+.strip .stat .v{font-size:18px;color:#fff;font-weight:800;font-family:'Orbitron',sans-serif}
+.strip .stat .v small{font-size:10px;color:var(--red-2);margin-left:4px;font-family:'JetBrains Mono',monospace}
+
+/* ===== EXPLAINER ===== */
+.explainer{max-width:720px;margin:0 auto 60px;padding:0 24px}
+.explainer h2{
+  font-family:'Orbitron',sans-serif;font-size:14px;letter-spacing:4px;color:var(--red);
+  margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--line-2);
+}
+.explainer p{font-size:12px;line-height:1.85;color:#bcbcc4;margin-bottom:14px}
+.explainer p strong{color:#fff}
+.explainer .pillars{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.explainer .pillar{border:1px solid var(--line-2);background:var(--panel);padding:18px}
+.explainer .pillar h3{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;color:var(--red);margin-bottom:10px}
+.explainer .pillar p{font-size:11px;line-height:1.7;color:#aaa;margin:0}
+
+/* ===== FOOTER ===== */
+.foot{
+  border-top:1px solid var(--line);padding:22px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:10px;letter-spacing:2px;color:var(--muted);
+}
+.foot .sys{display:flex;align-items:center;gap:8px}
+.foot .sys .dot{width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green)}
+
+@media(max-width:760px){
+  .nav{display:none}
+  .row,.row3,.explainer .pillars,.strip{grid-template-columns:1fr}
+  .image-drop{flex-direction:column;text-align:center}
+  .topbar{padding:12px 16px}
+  .brand-text .name{font-size:18px}
+  .wrap{margin:24px auto 40px}
+  .card{padding:22px 18px}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark"><span>M</span></div>
+    <div class="brand-text">
+      <div class="name">MAYHEM V2</div>
+      <div class="sub">TRADING LABORATORY</div>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <a href="#">LEADERBOARD</a><span class="sep">◆</span>
+    <a href="#">PORTFOLIO</a><span class="sep">◆</span>
+    <a href="#">POSITIONS</a><span class="sep">◆</span>
+    <a href="#">OPERATIONS</a><span class="sep">◆</span>
+    <a href="#">SCOPE</a><span class="sep">◆</span>
+    <a href="#">DOCUMENTATION</a>
+  </nav>
+
+  <div class="header-right">
+    <button class="icon-btn" title="Search">⌕</button>
+    <button class="icon-btn" title="Notifications">◔</button>
+    <div class="pill"><span class="dot"></span>FUEL <b>/ PNL</b></div>
+    <button class="btn-launch">LAUNCH</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="card">
+    <span class="card-corner-tr"></span>
+    <span class="card-corner-bl"></span>
+
+    <div class="wallet-row">
+      <div class="left">
+        <span class="dot"></span>
+        <span class="label">CONNECTED:</span>
+        <span class="addr">BLVQ...VFUE</span>
+      </div>
+      <div class="right">SOL · MAINNET</div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label>TOKEN NAME</label>
+        <input type="text" value="MAYHEM V2" placeholder="Enter token name">
+      </div>
+      <div class="field">
+        <label>SYMBOL / TICKER (MAX 8)</label>
+        <input type="text" value="MHMV2" placeholder="TICKER" maxlength="8">
+      </div>
+    </div>
+
+    <div class="field full">
+      <label>DESCRIPTION</label>
+      <textarea>MAYHEM V2 IS A TRADING BOT AUTOMATED BY 18 AI AGENTS. BUILT FOR SPEED, NOT EXTRACTION. EVERY FEE IS CIRCUMVENTED BACK INTO THE COIN. SUPPLY THE BOT BUYS IS BURNT — NEVER SOLD. AMPLIFYING MOMENTUM WITHOUT DRAINING HOLDERS.</textarea>
+    </div>
+
+    <div class="image-block">
+      <label style="display:block;font-size:10px;letter-spacing:2.5px;color:var(--muted);margin-bottom:8px;font-weight:600">IMAGE (SQUARE PREFERRED, MAX 4MB)</label>
+      <div class="image-drop">
+        <div class="image-preview">
+          <span class="badge">V2</span>
+          <div class="logo">MHM<small>V2</small></div>
+        </div>
+        <div class="image-info">
+          <h4>DROP LOGO HERE</h4>
+          <p>PNG · JPG · WEBP · GIF accepted. Square aspect ratio renders best across explorers and DexScreener.</p>
+          <span class="upload">▲ UPLOAD FILE</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row3">
+      <div class="field">
+        <label>TWITTER / X</label>
+        <input type="text" placeholder="LINK (OPTIONAL)">
+      </div>
+      <div class="field">
+        <label>TELEGRAM</label>
+        <input type="text" placeholder="LINK (OPTIONAL)">
+      </div>
+      <div class="field">
+        <label>WEBSITE</label>
+        <input type="text" placeholder="LINK (OPTIONAL)">
+      </div>
+    </div>
+
+    <button class="cta">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      CREATE TOKEN
+    </button>
+  </div>
+</main>
+
+<section class="strip">
+  <div class="stat"><div class="k">FEES → COIN</div><div class="v">100<small>%</small></div></div>
+  <div class="stat"><div class="k">BOT BUYS BURNT</div><div class="v">100<small>%</small></div></div>
+  <div class="stat"><div class="k">DEV TAX</div><div class="v">0<small>%</small></div></div>
+</section>
+
+<section class="explainer">
+  <h2>// WHAT IS MAYHEM V2</h2>
+  <p>You've seen the original Mayhem bot. Cool concept, broken execution — fees leaked out, supply got dumped on holders, same story every cycle.</p>
+  <p><strong>So we rebuilt it.</strong> Mayhem V2 is the version it should have been from day one. Two changes to the contract are all it took to flip the math.</p>
+
+  <div class="pillars">
+    <div class="pillar">
+      <h3>// FEES → COIN</h3>
+      <p>Every fee the bot generates is routed straight back into the token. The contract eats its own output. The more the bot runs, the stronger the coin gets.</p>
+    </div>
+    <div class="pillar">
+      <h3>// BUYS → BURN</h3>
+      <p>Supply purchased by the bot is sent to the burn address. Forever. Permanent deflation on every buy — not a wallet waiting to dump on you.</p>
+    </div>
+  </div>
+  <p style="margin-top:20px">Bot earns fees → fees buy supply → supply burns → circulating float drops → next round of fees hits a thinner book. <strong>It compounds.</strong></p>
+  <p>No dev tax. No team allocation. No insider unlocks. No "trust me bro" tokenomics. Just a bot that runs, a contract that burns, and a chart that reflects the math.</p>
+</section>
+
+<footer class="foot">
+  <div class="sys"><span class="dot"></span>SYSTEMS NOMINAL · v2.0.1</div>
+  <div>© MAYHEM LABORATORY · ALL RIGHTS BURNT</div>
+</footer>
+
+</body>
+</html>
