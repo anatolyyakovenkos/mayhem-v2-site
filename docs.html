@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Docs — Mayhem V2</title>
+<title>Docs — Anarchy Bot</title>
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -115,9 +115,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 
   <aside class="sidebar">
     <div class="brand">
-      <div class="brand-mark"><img src="logo.png" alt="Mayhem V2"></div>
+      <div class="brand-mark"><img src="logo.png" alt="Anarchy Bot"></div>
       <div class="brand-text">
-        <div class="name">MAYHEM V2</div>
+        <div class="name">ANARCHY BOT</div>
         <div class="sub">Trading Lab</div>
       </div>
     </div>
@@ -135,7 +135,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
     <div class="spacer"></div>
 
     <div class="socials">
-      <a href="https://x.com/Mayhem_V2" target="_blank" rel="noopener" title="X / Twitter">
+      <a href="https://x.com/0xarzen" target="_blank" rel="noopener" title="X / Twitter">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25h6.83l4.713 6.231 5.447-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/></svg>
       </a>
       <a href="https://github.com/zoro-jiro-san" target="_blank" rel="noopener" title="GitHub">
@@ -148,7 +148,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 
     <div class="topbar">
       <div class="crumbs">
-        <a href="index.html">Mayhem V2</a>
+        <a href="index.html">Anarchy Bot</a>
         <span class="sep">/</span>
         <span class="here">Documentation</span>
       </div>
@@ -158,7 +158,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 
       <aside class="toc">
         <div class="toc-title">On this page</div>
-        <a href="#what" class="active">What is Mayhem V2</a>
+        <a href="#what" class="active">What is Anarchy Bot</a>
         <a href="#why">Why we rebuilt it</a>
         <a href="#mechanics">How it works</a>
         <a href="#flywheel">The flywheel</a>
@@ -170,10 +170,10 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 
       <article class="doc">
         <h1>Documentation</h1>
-        <p class="lede">Mayhem V2 is the rebuilt version of the original Mayhem bot — every fee is routed back into the coin, every token the bot buys is burnt, and the dev tax is zero. This is how the system is actually wired.</p>
+        <p class="lede">Anarchy Bot is the rebuilt version of the original Mayhem bot — every fee is routed back into the coin, every token the bot buys is burnt, and the dev tax is zero. This is how the system is actually wired.</p>
 
-        <h2 id="what">What is Mayhem V2</h2>
-        <p>Mayhem V2 is a launchpad and trading-bot stack on Solana. You launch a coin from the dashboard, the bot turns on, and from that moment forward two things happen on every block:</p>
+        <h2 id="what">What is Anarchy Bot</h2>
+        <p>Anarchy Bot is a launchpad and trading-bot stack on Solana. You launch a coin from the dashboard, the bot turns on, and from that moment forward two things happen on every block:</p>
         <ul>
           <li>Fees the bot generates get routed back into the coin instead of a dev wallet.</li>
           <li>Tokens the bot purchases get sent to the burn address instead of being held to dump later.</li>
@@ -182,7 +182,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 
         <h2 id="why">Why we rebuilt it</h2>
         <p>The original Mayhem bot had the right idea and the wrong execution. Fees leaked. Supply got dumped. The flywheel ran in reverse and holders ate the loss.</p>
-        <blockquote><strong>Mayhem V2 fixes it at the contract level.</strong> The fixes aren't UI promises or off-chain "trust the team" claims — they're enforced by the program itself, so they hold whether anyone is watching or not.</blockquote>
+        <blockquote><strong>Anarchy Bot fixes it at the contract level.</strong> The fixes aren't UI promises or off-chain "trust the team" claims — they're enforced by the program itself, so they hold whether anyone is watching or not.</blockquote>
 
         <h2 id="mechanics">How it works</h2>
         <h3>Fee circumvention</h3>
@@ -219,12 +219,12 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
         <p>Head back to <a href="index.html" style="color:var(--red-2);text-decoration:underline">Create</a>, fill in name, ticker, description, and an image, then connect a Solana wallet. Once connected, the <strong>Create coin</strong> button activates and your launch is one signature away.</p>
         <ul>
           <li>Coin details are immutable after launch — choose carefully.</li>
-          <li>Mayhem mode and the tokenized agent are toggled on by default.</li>
+          <li>Anarchy mode and the tokenized agent are toggled on by default.</li>
           <li>Cash back routes creator rewards to traders instead of the dev wallet.</li>
         </ul>
 
         <h2 id="wallets">Supported wallets</h2>
-        <p>Mayhem V2 talks directly to the standard Solana wallet adapter providers:</p>
+        <p>Anarchy Bot talks directly to the standard Solana wallet adapter providers:</p>
         <ul>
           <li><strong>Phantom</strong> — recommended, best mobile support.</li>
           <li><strong>Solflare</strong> — full feature parity, good hardware-wallet flow.</li>
@@ -243,7 +243,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
         <p>There is no team allocation, no mint authority post-launch, and no fee wallet to drain. The contract owns its own outputs. We can't rug what we don't hold.</p>
 
         <h3>Where do I report issues?</h3>
-        <p>Open an issue on <a href="https://github.com/zoro-jiro-san" target="_blank" style="color:var(--red-2);text-decoration:underline">GitHub</a> or DM the <a href="https://x.com/Mayhem_V2" target="_blank" style="color:var(--red-2);text-decoration:underline">@Mayhem_V2</a> account on X.</p>
+        <p>Open an issue on <a href="https://github.com/zoro-jiro-san" target="_blank" style="color:var(--red-2);text-decoration:underline">GitHub</a> or DM the <a href="https://x.com/0xarzen" target="_blank" style="color:var(--red-2);text-decoration:underline">@0xarzen</a> account on X.</p>
       </article>
     </div>
   </div>
